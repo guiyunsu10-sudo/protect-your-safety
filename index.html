@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>校园隐匿互助空间 - 技术合规演示大面板</title>
+    <style>
+        :root {
+            --bg-dark: #0A0A0A;
+            --panel-bg: rgba(255, 255, 255, 0.08);
+            --border-color: rgba(255, 255, 255, 0.15);
+            --text-gold: #F4E7D3;
+            --cyber-green: #39FF14;
+            --alarm-red: #FF3B30;
+            --btn-orange: #E27D60;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+        body { background: var(--bg-dark); display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+        .dashboard-container { width: 100%; max-width: 460px; background: var(--panel-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.6); transition: all 0.4s; }
+        .dashboard-container.alarm-active { border-color: var(--alarm-red); box-shadow: 0 0 40px rgba(255, 59, 48, 0.4); }
+        .dashboard-header { text-align: center; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color); }
+        .dashboard-header h1 { color: var(--text-gold); font-size: 20px; font-weight: 600; }
+        .console-box { background: #121212; border: 1px solid #222; border-radius: 8px; padding: 12px; font-family: monospace; font-size: 11px; color: var(--cyber-green); min-height: 54px; line-height: 1.5; margin-bottom: 16px; }
+        .console-box.alert-mode { color: var(--alarm-red); }
+        .section-label { color: var(--text-gold); font-size: 11px; font-weight: bold; margin-bottom: 6px; text-transform: uppercase; display: block; }
+        .btn-group { display: flex; gap: 10px; margin-bottom: 16px; }
+        .scenario-btn { flex: 1; padding: 10px; border-radius: 8px; border: none; font-size: 11px; font-weight: bold; cursor: pointer; }
+        .btn-a { background: #85D4FF; color: #111; }
+        .btn-b { background: #FF7B7B; color: #111; }
+        .input-area { display: flex; gap: 8px; align-items: center; margin-bottom: 16px; }
+        textarea { flex: 1; height: 42px; border-radius: 8px; border: none; padding: 10px; font-size: 12px; resize: none; outline: none; background: #FFF; color: #333; }
+        .submit-btn { background: var(--btn-orange); color: white; border: none; border-radius: 8px; padding: 0 16px; height: 42px; font-size: 13px; font-weight: bold; cursor: pointer; }
+        .cbt-result-panel { background: #2C2523; color: #F4E7D3; border-radius: 12px; padding: 14px; font-size: 12px; line-height: 1.5; display: none; margin-top: 10px; }
+        .e2ee-ngo-panel { background: #FFF; color: #333; border-radius: 12px; padding: 16px; display: none; flex-direction: column; margin-top: 10px; }
+        .tech-shield-banner { background: #F4F7FF; border: 1px solid #ADC6FF; border-radius: 8px; padding: 10px; font-size: 10px; color: #1D39C4; margin-bottom: 10px; line-height: 1.4; }
+        .reset-btn { width: 100%; background: #222; color: #FFF; border: none; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 11px; }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container" id="mainDashboard">
+        <div class="dashboard-header">
+            <h1>校园隐匿互助空间</h1>
+            <p style="color:#A69385;font-size:11px;margin-top:4px;">🛡️ 模块三：100% 端侧 AI 运作与危机加密验证面板</p>
+        </div>
+        <span class="section-label">1. NPU EDGE-AI CORE LOGS (边缘运行日志)</span>
+        <div class="console-box" id="systemConsole">> 局部边缘计算层初始化成功。教务系统 API 物理断开连接。</div>
+        <span class="section-label">2. SELECT DEMO SCENARIO (选择汇报演示案例)</span>
+        <div class="btn-group">
+            <button class="scenario-btn btn-a" onclick="document.getElementById('payloadText').value='这学期选课全挂了，GPA估计要大跳水，整个人特别特别焦虑。'; document.getElementById('systemConsole').className='console-box'; document.getElementById('systemConsole').innerHTML='> [LOADED] 案例 A 已就绪。本地词向量处于拦截监控队列...';">载入案例 A (学业焦虑)</button>
+            <button class="scenario-btn btn-b" onclick="document.getElementById('payloadText').value='真的太痛苦了，看不到希望，想自残，想一了百了想不开了。'; document.getElementById('systemConsole').className='console-box'; document.getElementById('systemConsole').innerHTML='> [LOADED] 案例 B 已就绪。安全词法边界护盾严阵以待...';">载入案例 B (生命危机)</button>
+        </div>
+        <span class="section-label">3. APP WORKSPACE (匿名表达工作台)</span>
+        <div class="input-area">
+            <textarea id="payloadText" placeholder="点击上方按钮载入吐槽文本..."></textarea>
+            <button class="submit-btn" onclick="
+                var content = document.getElementById('payloadText').value.trim();
+                if(content) {
+                    document.getElementById('systemConsole').innerHTML = '> [端侧 NPU 计算中] 正在提取本地边缘词向量进行去权威分类...';
+                    setTimeout(function() {
+                        if(content.indexOf('想不开了') !== -1 || content.indexOf('自残') !== -1) {
+                            document.getElementById('mainDashboard').classList.add('alarm-active');
+                            document.getElementById('systemConsole').className = 'console-box alert-mode';
+                            document.getElementById('systemConsole').innerHTML = '> [CRITICAL ALARM] 拦截到重度生命危险词汇！<br>> Event-Triggered E2EE 机制单向瞬间激活！安全会话建立。';
+                            document.getElementById('cbtPanel').style.display = 'none';
+                            document.getElementById('ngoPanel').style.display = 'flex';
+                        } else {
+                            document.getElementById('systemConsole').innerHTML = '> [ANALYSIS] 识别结果：中度日常焦虑。<br>> 安全边界：触发去耻感平民化同辈 CBT 话术，数据不离端。';
+                            document.getElementById('cbtPanel').style.display = 'block';
+                            document.getElementById('ngoPanel').style.display = 'none';
+                        }
+                    }, 900);
+                }
+            ">发送 🚀</button>
+        </div>
+        <div class="cbt-result-panel" id="cbtPanel">
+            🛡️ <strong>去耻感同辈认知互助引导（模块二方案）：</strong><br>
+            “树友别灰心！学术避雷频道里刚有好几个同学发帖说遇到一模一样选课卡死的情况了，这学期教授给分普遍严格。来频道和大家抱团吐槽倒倒苦水吧，你绝不会一个人！”
+        </div>
+        <div class="e2ee-ngo-panel" id="ngoPanel">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+                <div style="width:32px;height:32px;background:var(--alarm-red);border-radius:50%;display:flex;justify-content:center;align-items:center;color:white;font-size:16px;">❤️</div>
+                <div>
+                    <h4 style="font-size:14px;color:#111;">15分钟安全网 - 合作 NGO 倾听绿洲</h4>
+                    <p style="font-size:10px;color:#666;">提供专业级的完全全隐匿倾听</p>
+                </div>
+            </div>
+            <div class="tech-shield-banner">
+                <strong>⚡ 密码学隐私护盾（Event-Triggered E2EE）已单向激活：</strong><br>
+                • 对话数据端到端加密，中转服务器零日志无公钥解密。<br>
+                • 物理层硬隔离阻断：100% 无法联动/上报大学教务系统。
+            </div>
+            <div style="background:#F5F5F5;border-radius:8px;padding:10px;font-size:11px;color:#444;border-left:3px solid var(--btn-orange);margin-bottom:10px;line-height:1.4;">
+                <strong>线上值班专业社工：</strong>“树友你好。收到加密信号，我们在这里。这条通道是端到端全加密的，学校和任何人都不会知道。有什么压力随时跟我们倒倒苦水吧。”
+            </div>
+            <button class="reset-btn" onclick="
+                document.getElementById('ngoPanel').style.display = 'none';
+                document.getElementById('cbtPanel').style.display = 'none';
+                document.getElementById('mainDashboard').classList.remove('alarm-active');
+                document.getElementById('payloadText').value = '';
+                document.getElementById('systemConsole').className = 'console-box';
+                document.getElementById('systemConsole').innerHTML = '> 会话安全安全退出。<br>> 临时非对称私钥已在内存中完成物理覆盖销毁（RAM Wiped）。';
+            ">物理清空本地密文并隐匿退出</button>
+        </div>
+    </div>
+</body>
+</html>
